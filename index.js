@@ -91,6 +91,8 @@ Audiofile.clone = function(){
 };
 
 Audiofile.prototype.play = function( time ){
+  var audio = this;
+
   if( this.loaded && !this.playing ){
     time = time === undefined ? this.time : time;
 
@@ -100,13 +102,15 @@ Audiofile.prototype.play = function( time ){
     source.connect( this.context.destination );
     source.loop = !!this.options.loop;
 
+    source.onended = (function(){ this.playing = false; }).bind( this );
+
     this.playing = true;
     this.time = time;
     this.date = this.systemDate();
 
     var timeInSeconds = time/1000;
 
-    audio.source.start( 0, timeInSeconds );
+    source.start( 0, timeInSeconds );
   }
 };
 
@@ -125,7 +129,7 @@ Audiofile.prototype.progress = function( time ){
 
 Audiofile.prototype.pause = function(){
   if( this.loaded ){
-    audio.source.stop(0);
+    this.source.stop(0);
 
     this.playing = false;
     this.time += this.systemDate() - this.date;
@@ -134,7 +138,7 @@ Audiofile.prototype.pause = function(){
 
 Audiofile.prototype.stop = function(){
   if( this.loaded ){
-    audio.source.stop(0);
+    this.source.stop(0);
 
     this.playing = false;
     this.time = 0;
