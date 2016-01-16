@@ -1,0 +1,27 @@
+{
+  "name": "audiofile",
+  "version": "1.0.0",
+  "description": "Easily load and play audio files via the Web Audio APIs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo Open demo/index.html in your browser"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxkfranz/audiofile.git"
+  },
+  "keywords": [
+    "audio",
+    "web",
+    "audio",
+    "file",
+    "play",
+    "load"
+  ],
+  "author": "Max Franz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/maxkfranz/audiofile/issues"
+  },
+  "homepage": "https://github.com/maxkfranz/audiofile#readme"
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <script src="../index.js"></script>
+
+    <style>
+      body {
+        font-size: 14px;
+        font-family: helvetica neue, helvetica, libre sans, sans-serif;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>audiofile demo</h1>
+
+    <p>
+      This is a barebones demo to serve as a reference and a testbed.  Note that
+      the audio plays nicely on mobile device OSes without killing the music you
+      have playing in the background.
+    </p>
+
+    <p><button id="play">Play</button> : Play the audio file</p>
+    <p><button id="pause">Pause</button> : Pause the audio file</p>
+    <p><button id="stop">Stop</button> : Pause the audio and sets the progress to the start</p>
+    <p><button id="rewind">Rewind</button> : Rewind the audio the specified number of milliseconds</p>
+    <p><button id="fastforward">Fastforward</button> : Fastforward the audio the specified number of milliseconds</p>
+    <p><button id="gotodown">Go to down scale</button> : Set the progress of the audio to the downward portion of the scale</p>
+
+    <script>
+      var audio = Audiofile({
+        url: './scale.mp3'
+      });
+
+      var $ = document.querySelector.bind( document );
+
+      $('#play').addEventListener('click', function(){
+        audio.play();
+      });
+
+      $('#pause').addEventListener('click', function(){
+        audio.pause();
+      });
+
+      $('#stop').addEventListener('click', function(){
+        audio.stop();
+      });
+
+      $('#rewind').addEventListener('click', function(){
+        audio.rewind( 1000 );
+      });
+
+      $('#fastforward').addEventListener('click', function(){
+        audio.fastforward( 1000 );
+      });
+
+      $('#gotodown').addEventListener('click', function(){
+        audio.progress( 2500 );
+      });
+    </script>
+  </body>
+</html>
