@@ -130,9 +130,9 @@ Audiofile.prototype.play = function( time ){
   }
 };
 
-Audiofile.prototype.stop = function( goToTime ){
+Audiofile.prototype.stop = function( time ){
   if( this.loaded ){
-    this.time = goToTime === undefined ? 0 : goToTime;
+    this.time = time === undefined ? 0 : time;
     this.playing = false;
 
     var src = this.source;
@@ -143,7 +143,7 @@ Audiofile.prototype.stop = function( goToTime ){
   }
 };
 
-Audiofile.prototype.pause = function( got ){
+Audiofile.prototype.pause = function(){
   this.stop( this.time + systemDate() - this.date );
 };
 
@@ -154,7 +154,7 @@ Audiofile.prototype.progress = function( time ){
 
   if( this.loaded ){
     if( this.playing ){
-      this.stop();
+      this.pause();
       this.play( time );
     } else {
       this.time = time;
@@ -162,11 +162,25 @@ Audiofile.prototype.progress = function( time ){
   }
 };
 
+Audiofile.prototype.progressDelta = function( deltaTime ){
+  var time;
+
+  if( this.loaded ){
+    var playing = this.playing;
+
+    if( playing ){ this.pause(); }
+
+    this.progress( this.time + deltaTime );
+
+    if( playing ){ this.play(); }
+  }
+};
+
 Audiofile.prototype.rewind = function( deltaTime ){
   if( deltaTime === undefined ){
     this.progress( 0 );
   } else {
-    this.progress( this.time - deltaTime );
+    this.progressDelta( -deltaTime );
   }
 };
 
@@ -174,7 +188,7 @@ Audiofile.prototype.fastforward = function( deltaTime ){
   if( deltaTime === undefined ){
     this.progress( Number.MAX_VALUE );
   } else {
-    this.progress( this.time + deltaTime );
+    this.progressDelta( +deltaTime );
   }
 };
 
