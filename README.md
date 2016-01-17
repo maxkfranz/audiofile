@@ -88,6 +88,16 @@ af.load().then(function(){
 });
 ```
 
+If you want a quick synchronous check if the audiofile is loaded or not, just read `af.loaded`:
+
+```js
+if( af.loaded ){
+  console.log('do something');
+} else {
+  console.log('do something else');
+}
+```
+
 ### af.play()
 
 Play the audiofile at its current progress level.
