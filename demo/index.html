@@ -23,13 +23,16 @@
     <p><button id="play">Play</button> : Play the audio file</p>
     <p><button id="pause">Pause</button> : Pause the audio file</p>
     <p><button id="stop">Stop</button> : Pause the audio and sets the progress to the start</p>
-    <p><button id="rewind">Rewind</button> : Rewind the audio the specified number of milliseconds</p>
-    <p><button id="fastforward">Fastforward</button> : Fastforward the audio the specified number of milliseconds</p>
-    <p><button id="gotodown">Go to down scale</button> : Set the progress of the audio to the downward portion of the scale</p>
+    <p><button id="rewind">Rewind</button> : Rewind the audio to the beginning</p>
+    <p><button id="rewind-500">Rewind 500ms</button> : Rewind 500 milliseconds</p>
+    <p><button id="fastforward">Fastforward</button> : Fastforward the audio to the end</p>
+    <p><button id="fastforward-500">Fastforward 500ms</button> : Fastforward the audio 500ms</p>
+    <p><button id="setprog">Set play progress</button> : Set the progress of the audio to the downward portion of the scale</p>
 
     <script>
       var audio = Audiofile({
-        url: './scale.mp3'
+        url: './scale.mp3',
+        loop: true
       });
 
       var $ = document.querySelector.bind( document );
@@ -47,15 +50,23 @@
       });
 
       $('#rewind').addEventListener('click', function(){
-        audio.rewind( 1000 );
+        audio.rewind();
+      });
+
+      $('#rewind-500').addEventListener('click', function(){
+        audio.rewind( 500 );
       });
 
       $('#fastforward').addEventListener('click', function(){
-        audio.fastforward( 1000 );
+        audio.fastforward();
       });
 
-      $('#gotodown').addEventListener('click', function(){
-        audio.progress( 2500 );
+      $('#fastforward-500').addEventListener('click', function(){
+        audio.fastforward( 500 );
+      });
+
+      $('#setprog').addEventListener('click', function(){
+        audio.progress( 3750 );
       });
     </script>
   </body>

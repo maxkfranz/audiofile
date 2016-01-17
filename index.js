@@ -1,3 +1,7 @@
+var Audiofile;
+
+(function(){ // scope start
+
 if( !Promise ){
   console.error('Audiofile could not find the `Promise` API; use a polyfil');
 }
@@ -6,7 +10,7 @@ if( !fetch ){
   console.error('Audiofile could not find the `fetch` API; use a polyfil');
 }
 
-var Audiofile = function( opts ){
+Audiofile = function( opts ){
   if( !( this instanceof Audiofile ) ){
     return new Audiofile( opts );
   }
@@ -44,13 +48,13 @@ Audiofile.prototype.load = function(){
       return new Promise(function( resolve, reject ){
         var reader = new FileReader();
 
-        reader.addEventListener('load', function( e ){
+        reader.onload = function( e ){
           resolve( reader.result );
-        });
+        };
 
-        reader.addEventListener('error', function( e ){
+        reader.onerror = function( e ){
           reject( e );
-        });
+        };
 
         reader.readAsArrayBuffer( blob );
       });
@@ -80,7 +84,7 @@ Audiofile.clone = function(){
   // (avoids having to load twice)
   if( this.loadingPromise ){
     audio.loadingPromise = this.loadingPromise.then(function( buffer ){
-      audio.buffer = this;
+      audio.buffer = buffer;
       audio.loaded = true;
 
       return buffer;
@@ -88,6 +92,15 @@ Audiofile.clone = function(){
   }
 
   return audio;
+};
+
+var systemDate = function(){
+  // use the higher accuracy performance.now() by default
+  if( performance && performance.now ){
+    return performance.now();
+  } else {
+    return Date.now();
+  }
 };
 
 Audiofile.prototype.play = function( time ){
@@ -100,57 +113,52 @@ Audiofile.prototype.play = function( time ){
 
     source.buffer = this.buffer;
     source.connect( this.context.destination );
-    source.loop = !!this.options.loop;
 
-    source.onended = (function(){ this.playing = false; }).bind( this );
+    source.onended = (function(){
+      if( this.playing && !source._killedAF ){
+        this.stop();
+      }
+    }).bind( this );
 
     this.playing = true;
     this.time = time;
-    this.date = this.systemDate();
+    this.date = systemDate();
 
-    var timeInSeconds = time/1000;
+    var timeInSeconds = time / 1000;
 
-    source.start( 0, timeInSeconds );
+    source.start( this.context.currentTime, timeInSeconds );
   }
+};
+
+Audiofile.prototype.stop = function( goToTime ){
+  if( this.loaded ){
+    this.time = goToTime === undefined ? 0 : goToTime;
+    this.playing = false;
+
+    var src = this.source;
+    if( src ){
+      src._killedAF = true;
+      src.stop();
+    }
+  }
+};
+
+Audiofile.prototype.pause = function( got ){
+  this.stop( this.time + systemDate() - this.date );
 };
 
 Audiofile.prototype.progress = function( time ){
   if( time === undefined ){ return this.time; }
 
-  if( this.loaded ){
-    this.time = time;
+  time = Math.max( 0, time ); // or context throws err
 
+  if( this.loaded ){
     if( this.playing ){
-      this.pause();
-      this.play();
+      this.stop();
+      this.play( time );
+    } else {
+      this.time = time;
     }
-  }
-};
-
-Audiofile.prototype.pause = function(){
-  if( this.loaded ){
-    this.source.stop(0);
-
-    this.playing = false;
-    this.time += this.systemDate() - this.date;
-  }
-};
-
-Audiofile.prototype.stop = function(){
-  if( this.loaded ){
-    this.source.stop(0);
-
-    this.playing = false;
-    this.time = 0;
-  }
-};
-
-Audiofile.prototype.systemDate = function(){
-  // use the higher accuracy performance.now() by default
-  if( performance && performance.now ){
-    return performance.now();
-  } else {
-    return Date.now();
   }
 };
 
@@ -169,3 +177,9 @@ Audiofile.prototype.fastforward = function( deltaTime ){
     this.progress( this.time + deltaTime );
   }
 };
+
+if( typeof module !== 'undefined' ){
+  module.exports = Audiofile;
+}
+
+})(); // scope end
