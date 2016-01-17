@@ -29,6 +29,7 @@ Audiofile = function( opts ){
 
   this.loaded = false;
   this.time = 0;
+  this.level = 1;
 
   if( this.options.preload ){
     this.load();
@@ -111,10 +112,15 @@ afpt.play = function( time ){
   if( this.loaded && !this.playing ){
     time = time === undefined ? this.time : time;
 
-    var source = this.source = this.context.createBufferSource();
+    var cxt = this.context;
+    var source = this.source = cxt.createBufferSource();
+    var gainNode =  source.gainNode = cxt.createGain();
+
+    gainNode.gain.value = this.level;
 
     source.buffer = this.buffer;
-    source.connect( this.context.destination );
+    source.connect( gainNode );
+    gainNode.connect( cxt.destination );
 
     source.onended = (function(){
       if( this.playing && !source._killedAF ){
@@ -130,6 +136,8 @@ afpt.play = function( time ){
 
     source.start( this.context.currentTime, timeInSeconds );
   }
+
+  return this;
 };
 
 afpt.stop = function( time ){
@@ -143,10 +151,12 @@ afpt.stop = function( time ){
       src.stop();
     }
   }
+
+  return this;
 };
 
 afpt.pause = function(){
-  this.stop( this.time + systemDate() - this.date );
+  return this.stop( this.time + systemDate() - this.date );
 };
 
 afpt.progress = function( time ){
@@ -162,6 +172,8 @@ afpt.progress = function( time ){
       this.time = time;
     }
   }
+
+  return this;
 };
 
 afpt.progressDelta = function( deltaTime ){
@@ -176,6 +188,8 @@ afpt.progressDelta = function( deltaTime ){
 
     if( playing ){ this.play(); }
   }
+
+  return this;
 };
 
 afpt.rewind = function( deltaTime ){
@@ -184,6 +198,8 @@ afpt.rewind = function( deltaTime ){
   } else {
     this.progressDelta( -deltaTime );
   }
+
+  return this;
 };
 
 afpt.fastforward = function( deltaTime ){
@@ -192,6 +208,22 @@ afpt.fastforward = function( deltaTime ){
   } else {
     this.progressDelta( +deltaTime );
   }
+
+  return this;
+};
+
+afpt.volume = function( level ){
+  if( level !== undefined ){
+    this.level = level;
+
+    if( this.playing ){
+      this.pause().play();
+    }
+  } else {
+    return this.level;
+  }
+
+  return this;
 };
 
 if( typeof module !== 'undefined' ){

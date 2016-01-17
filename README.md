@@ -15,6 +15,7 @@ Dead easy audio
 * Promise support
 * npm/browserify/webpack and global browser module support
 * Desktop and mobile browsers support
+* Chaining support
 * Demo included
 
 
@@ -149,8 +150,10 @@ af.fastforward( 1000 ); // same as af.progressDelta( 1000 )
 
 ### af.volume()
 
-**TODO** Get or set the volume as a percent (0 to 1 inclusive).  Values greater than 1 boost the volume.
+**TODO** Get or set the volume level as a percent (0 to 1 inclusive).  Values greater than 1 boost the volume.
 
 ```js
-af.volume(0.5); // half volume
+var vol = af.volume(); // current level
+
+af.volume(0.5); // set level to 50%
 ```
