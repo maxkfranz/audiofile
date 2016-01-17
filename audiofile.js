@@ -120,7 +120,7 @@ afpt.play = function( time ){
 
     source.buffer = this.buffer;
     source.connect( gainNode );
-    gainNode.connect( cxt.destination );
+    gainNode.connect( this.options.output || cxt.destination );
 
     source.onended = (function(){
       if( source._killedAF ){

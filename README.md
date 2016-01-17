@@ -61,7 +61,7 @@ The `options` object can contain these fields:
 * `preload` : Whether or not to load the audio on object creation (default `true`).
 * `loop` : Whether to infinitely loop the audio (default `false`).
 * `volume` : The volume of the audio in percent (0 to 1 inclusive; default `1`).  Values greater than 1 boost the volume.
-* **TODO** `output` : Redirects the output of the audiofile to the specified `AudioNode`, allowing for postprocessing of the audio (system audio is the default).
+* `output` : Redirects the output of the audiofile to the specified `AudioNode`, allowing for postprocessing of the audio (system audio is the default).
 
 ### Audiofile.killUserAudio()
 
