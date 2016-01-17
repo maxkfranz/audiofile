@@ -150,7 +150,7 @@ af.fastforward( 1000 ); // same as af.progressDelta( 1000 )
 
 ### af.volume()
 
-**TODO** Get or set the volume level as a percent (0 to 1 inclusive).  Values greater than 1 boost the volume.
+Get or set the volume level as a percent (0 to 1 inclusive).  Values greater than 1 boost the volume.
 
 ```js
 var vol = af.volume(); // current level
