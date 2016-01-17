@@ -35,7 +35,9 @@ Audiofile = function( opts ){
   }
 };
 
-Audiofile.prototype.load = function(){
+var afpt = Audiofile.prototype;
+
+afpt.load = function(){
   var audio = this;
   var opts = this.options;
 
@@ -73,7 +75,7 @@ Audiofile.prototype.load = function(){
   }
 };
 
-Audiofile.clone = function(){
+afpt.clone = function(){
   var opts = {};
   for( var i in this.options ){ opts[i] = this.options[i] }
   opts.preload = false;
@@ -103,7 +105,7 @@ var systemDate = function(){
   }
 };
 
-Audiofile.prototype.play = function( time ){
+afpt.play = function( time ){
   var audio = this;
 
   if( this.loaded && !this.playing ){
@@ -130,7 +132,7 @@ Audiofile.prototype.play = function( time ){
   }
 };
 
-Audiofile.prototype.stop = function( time ){
+afpt.stop = function( time ){
   if( this.loaded ){
     this.time = time === undefined ? 0 : time;
     this.playing = false;
@@ -143,11 +145,11 @@ Audiofile.prototype.stop = function( time ){
   }
 };
 
-Audiofile.prototype.pause = function(){
+afpt.pause = function(){
   this.stop( this.time + systemDate() - this.date );
 };
 
-Audiofile.prototype.progress = function( time ){
+afpt.progress = function( time ){
   if( time === undefined ){ return this.time; }
 
   time = Math.max( 0, time ); // or context throws err
@@ -162,7 +164,7 @@ Audiofile.prototype.progress = function( time ){
   }
 };
 
-Audiofile.prototype.progressDelta = function( deltaTime ){
+afpt.progressDelta = function( deltaTime ){
   var time;
 
   if( this.loaded ){
@@ -176,7 +178,7 @@ Audiofile.prototype.progressDelta = function( deltaTime ){
   }
 };
 
-Audiofile.prototype.rewind = function( deltaTime ){
+afpt.rewind = function( deltaTime ){
   if( deltaTime === undefined ){
     this.progress( 0 );
   } else {
@@ -184,7 +186,7 @@ Audiofile.prototype.rewind = function( deltaTime ){
   }
 };
 
-Audiofile.prototype.fastforward = function( deltaTime ){
+afpt.fastforward = function( deltaTime ){
   if( deltaTime === undefined ){
     this.progress( Number.MAX_VALUE );
   } else {

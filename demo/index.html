@@ -1,7 +1,9 @@
 <!DOCTYPE>
 <html>
   <head>
-    <script src="../index.js"></script>
+    <title>audiofile demo</title>
+
+    <script src="../audiofile.js"></script>
 
     <style>
       body {
@@ -31,43 +33,27 @@
 
     <script>
       var audio = Audiofile({
-        url: './scale.mp3',
-        loop: true
+        url: './scale.mp3'
       });
 
       var $ = document.querySelector.bind( document );
 
-      $('#play').addEventListener('click', function(){
-        audio.play();
-      });
+      var bindings = {
+        '#play': function(){ audio.play(); },
+        '#pause': function(){ audio.pause(); },
+        '#stop': function(){ audio.stop(); },
+        '#rewind': function(){ audio.rewind(); },
+        '#rewind-500': function(){ audio.rewind( 500 ); },
+        '#fastforward': function(){ audio.fastforward(); },
+        '#fastforward-500': function(){ audio.fastforward( 500 ); },
+        '#setprog': function(){ audio.progress( 3750 ); }
+      };
 
-      $('#pause').addEventListener('click', function(){
-        audio.pause();
-      });
+      for( var selector in bindings ){
+        var fn = bindings[ selector ];
 
-      $('#stop').addEventListener('click', function(){
-        audio.stop();
-      });
-
-      $('#rewind').addEventListener('click', function(){
-        audio.rewind();
-      });
-
-      $('#rewind-500').addEventListener('click', function(){
-        audio.rewind( 500 );
-      });
-
-      $('#fastforward').addEventListener('click', function(){
-        audio.fastforward();
-      });
-
-      $('#fastforward-500').addEventListener('click', function(){
-        audio.fastforward( 500 );
-      });
-
-      $('#setprog').addEventListener('click', function(){
-        audio.progress( 3750 );
-      });
+        $( selector ).addEventListener( fn );
+      }
     </script>
   </body>
 </html>
