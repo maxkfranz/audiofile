@@ -123,7 +123,13 @@ afpt.play = function( time ){
     gainNode.connect( cxt.destination );
 
     source.onended = (function(){
-      if( this.playing && !source._killedAF ){
+      if( source._killedAF ){
+        return; // ignore the event if we caused it
+      }
+
+      if( this.options.loop ){ // play again
+        this.stop().play();
+      } else if( this.playing ){ // stop to allow replay support
         this.stop();
       }
     }).bind( this );
@@ -224,6 +230,14 @@ afpt.volume = function( level ){
   }
 
   return this;
+};
+
+afpt.loop = function( bool ){
+  if( bool !== undefined ){
+    this.options.loop = bool;
+  } else {
+    return this.options.loop;
+  }
 };
 
 if( typeof module !== 'undefined' ){

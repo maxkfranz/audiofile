@@ -22,6 +22,7 @@
       have playing in the background.
     </p>
 
+    <hr/>
     <p><button id="play">Play</button> : Play the audio file</p>
     <p><button id="pause">Pause</button> : Pause the audio file</p>
     <p><button id="stop">Stop</button> : Pause the audio and sets the progress to the start</p>
@@ -30,10 +31,17 @@
     <p><button id="fastforward">Fastforward</button> : Fastforward the audio to the end</p>
     <p><button id="fastforward-500">Fastforward 500ms</button> : Fastforward the audio 500ms</p>
     <p><button id="setprog">Set play progress</button> : Set the progress of the audio to the downward portion of the scale</p>
+
+    <hr/>
     <p><button id="mute">Mute</button> : Set the volume to 0</p>
     <p><button id="half-vol">Half volume</button> : Set the volume to 0.5</p>
     <p><button id="full-vol">Full volume</button> : Set the volume to 1</p>
     <p><button id="boost-vol">Boost volume</button> : Set the volume to 2</p>
+
+    <hr/>
+    <p><button id="loop-on">Enable looping</button> : Automatically replay the audio after it finishes</p>
+    <p><button id="loop-off">Disable looping</button> : Play once</p>
+
 
     <script>
       var audio = Audiofile({
@@ -54,7 +62,9 @@
         '#mute': function(){ audio.volume(0); },
         '#half-vol': function(){ audio.volume(0.5); },
         '#full-vol': function(){ audio.volume(1); },
-        '#boost-vol': function(){ audio.volume(2); }
+        '#boost-vol': function(){ audio.volume(2); },
+        '#loop-on': function(){ audio.loop(true); },
+        '#loop-off': function(){ audio.loop(false); }
       };
 
       for( var selector in bindings ){

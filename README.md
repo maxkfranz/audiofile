@@ -59,8 +59,8 @@ The `options` object can contain these fields:
 * `url` : The URL of the audio (mandatory).
 * `fetch` : A fetch [init options object](https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch#Parameters), allowing you to customise the request headers et cetera (fetch defaults are default here, i.e. plain HTTP GET).
 * `preload` : Whether or not to load the audio on object creation (default `true`).
-* **TODO** `loop` : Whether to infinitely loop the audio (default `false`).
-* **TODO** `volume` : The volume of the audio in percent (0 to 1 inclusive; default `1`).  Values greater than 1 boost the volume.
+* `loop` : Whether to infinitely loop the audio (default `false`).
+* `volume` : The volume of the audio in percent (0 to 1 inclusive; default `1`).  Values greater than 1 boost the volume.
 * **TODO** `output` : Redirects the output of the audiofile to the specified `AudioNode`, allowing for postprocessing of the audio (system audio is the default).
 
 ### Audiofile.killUserAudio()
@@ -156,4 +156,14 @@ Get or set the volume level as a percent (0 to 1 inclusive).  Values greater tha
 var vol = af.volume(); // current level
 
 af.volume(0.5); // set level to 50%
+```
+
+### af.loop()
+
+Get or set whether looping is enabled.  This is useful if you want to reconfigure an audiofile.
+
+```js
+var looping = af.loop();
+
+af.loop( false ); // turn off looping
 ```
