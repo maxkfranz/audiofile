@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>audiofile demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <script src="../audiofile.js"></script>
 
@@ -42,6 +43,9 @@
     <p><button id="loop-on">Enable looping</button> : Automatically replay the audio after it finishes</p>
     <p><button id="loop-off">Disable looping</button> : Stop when finished</p>
 
+    <hr/>
+    <p><button id="kill-bg">Kill user audio</button> : Stops background music on mobile</p>
+
 
     <script>
       var audio = Audiofile({
@@ -64,7 +68,8 @@
         '#full-vol': function(){ audio.volume(1); },
         '#boost-vol': function(){ audio.volume(2); },
         '#loop-on': function(){ audio.loop(true); },
-        '#loop-off': function(){ audio.loop(false); }
+        '#loop-off': function(){ audio.loop(false); },
+        '#kill-bg': function(){ Audiofile.killUserAudio(); }
       };
 
       for( var selector in bindings ){

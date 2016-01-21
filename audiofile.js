@@ -22,6 +22,7 @@ Audiofile = function( opts ){
   for( var i in opts ){ this.options[i] = opts[i] }
 
   try {
+    var AudioContext = AudioContext || webkitAudioContext;
     this.context = new AudioContext();
   } catch( e ){
     console.error('Audiofile could not find the Web Audio APIs; your browser is not supported');
@@ -34,6 +35,17 @@ Audiofile = function( opts ){
   if( this.options.preload ){
     this.load();
   }
+};
+
+// play a small silent wav file in an <audio> tag to kill the background music
+Audiofile.killUserAudio = function(){
+  var silenceSrc = 'data:audio/wav;base64,UklGRnwAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YVgAAAABAP7/AgD//wAAAgD9/wMA/v8BAAAA//8CAP3/AwD+/wEAAAD//wEA//8BAP//AgD+/wEA//8CAP7/AgD+/wEAAQD//wAAAQD+/wMA/f8DAP3/AwD9/wIA';
+  var audio = document.createElement('audio');
+  var source = document.createElement('source');
+
+  source.src = silenceSrc;
+  audio.appendChild( source );
+  audio.play();
 };
 
 var afpt = Audiofile.prototype;
