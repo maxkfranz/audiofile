@@ -65,7 +65,7 @@ The `options` object can contain these fields:
 
 ### Audiofile.killUserAudio()
 
-**TODO** If you want to disable the user's own background audio (e.g. music, podcasts), then you must call this function.  This is useful in games with their own background music.  By default, the user's background audio is respected.
+If you want to disable the user's own background audio (e.g. music, podcasts), then you must call this function.  This is useful in games with their own background music.  By default, the user's background audio is respected.
 
 ```js
 Audiofile.killUserAudio();
