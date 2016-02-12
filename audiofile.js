@@ -10,6 +10,14 @@ if( !fetch ){
   console.error('Audiofile could not find the `fetch` API; use a polyfil');
 }
 
+var context;
+try {
+  var AudioContext = AudioContext || webkitAudioContext;
+  context = new AudioContext();
+} catch( e ){
+  console.error('Audiofile could not find the Web Audio APIs; your browser is not supported');
+}
+
 Audiofile = function( opts ){
   if( !( this instanceof Audiofile ) ){
     return new Audiofile( opts );
@@ -21,12 +29,7 @@ Audiofile = function( opts ){
 
   for( var i in opts ){ this.options[i] = opts[i] }
 
-  try {
-    var AudioContext = AudioContext || webkitAudioContext;
-    this.context = new AudioContext();
-  } catch( e ){
-    console.error('Audiofile could not find the Web Audio APIs; your browser is not supported');
-  }
+  this.context = context;
 
   this.loaded = false;
   this.time = 0;
