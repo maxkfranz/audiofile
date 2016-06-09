@@ -12,8 +12,8 @@ if( !fetch ){
 
 var context;
 try {
-  var AudioContext = AudioContext || webkitAudioContext;
-  context = new AudioContext();
+  var AudioContextImpl = window.AudioContext || window.webkitAudioContext;
+  context = new AudioContextImpl();
 } catch( e ){
   console.error('Audiofile could not find the Web Audio APIs; your browser is not supported');
 }
@@ -51,6 +51,8 @@ Audiofile.killUserAudio = function(){
   audio.play();
 };
 
+Audiofile.resetUserAudio = Audiofile.killUserAudio;
+
 var afpt = Audiofile.prototype;
 
 afpt.load = function(){
@@ -60,9 +62,13 @@ afpt.load = function(){
   if( audio.loadingPromise ){
     return audio.loadingPromise;
   } else {
-    return audio.loadingPromise = fetch( opts.url, opts.fetch ).then(function( resp ){
-      return resp.blob();
-    }).then(function( blob ){
+    var load = opts.load || function(){
+      return fetch( opts.url, opts.fetch ).then(function( resp ){
+        return resp.blob();
+      });
+    };
+
+    return audio.loadingPromise = load().then(function( blob ){
       return new Promise(function( resolve, reject ){
         var reader = new FileReader();
 

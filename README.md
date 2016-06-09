@@ -56,8 +56,9 @@ var af = audiofile({ /* options... */ });
 
 The `options` object can contain these fields:
 
-* `url` : The URL of the audio (mandatory).
+* `url` : The URL of the audio (mandatory if using `fetch`).
 * `fetch` : A fetch [init options object](https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch#Parameters), allowing you to customise the request headers et cetera (fetch defaults are default here, i.e. plain HTTP GET).
+* `load` : An alternative to `fetch`.  When specified, `fetch` is ignored the `load` promise is used to get the file.  The promise is expected to resolve to a `Blob`.
 * `preload` : Whether or not to load the audio on object creation (default `true`).
 * `loop` : Whether to infinitely loop the audio (default `false`).
 * `volume` : The volume of the audio in percent (0 to 1 inclusive; default `1`).  Values greater than 1 boost the volume.
@@ -69,6 +70,12 @@ If you want to disable the user's own background audio (e.g. music, podcasts), t
 
 ```js
 Audiofile.killUserAudio();
+```
+
+You may alternatively call this:
+
+```js
+Audiofile.resetUserAudio();
 ```
 
 ### af.clone()
