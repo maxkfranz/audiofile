@@ -120,7 +120,7 @@ afpt.clone = function(){
 
 var systemDate = function(){
   // use the higher accuracy performance.now() by default
-  if( performance && performance.now ){
+  if( window.performance && performance.now ){
     return performance.now();
   } else {
     return Date.now();
@@ -175,7 +175,7 @@ afpt.stop = function( time ){
     var src = this.source;
     if( src ){
       src._killedAF = true;
-      src.stop();
+      src.stop( this.context.currentTime );
     }
   }
 
